@@ -1,1 +1,1 @@
-txt# Translation using ChatGPT
+Translation using ChatGPT
