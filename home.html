@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loco Auto Translate</title>
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f1f1f1;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #Form {
+      background-color: #ffffff;
+      margin: 100px auto;
+      font-family: Raleway;
+      padding: 40px;
+      width: 70%;
+      min-width: 300px;
+    }
+
+    textarea {
+      width: 70%;
+      min-width: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <form id="Form">
+    <div id="tabContainer">
+      <button style="float:left;" onclick="previousTab(event)" class="btn btn-light" id="prevButton">Previous</button>
+      <button style="float:right;" onclick="nextTab(event)" class="btn btn-light" id="nextButton">Next</button>
+      <button style="float:right;" class="btn btn-danger" id="closeButton">Close</button>
+    </div>
+    <div id="error" style="color: red; font-size: 15px; font-weight: 800;"></div>
+    <div id="tablesContainer"></div>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+  <script>
+    const array = {
+      "1": '%1$s - %2$s',
+      "2": '%1$s changed the comment status',
+      "3": 'Managing site "%s"',
+      "4": '"% d" comment moved to Spam.',
+      "5": '%1$s bytes (%2$s MB)',
+      "6": 'The quick brown %s fox jumps over the lazy dog in the middle of the night.(%2$s hits, %3$s misses)',
+      "7": "No form definition found at %s.",
+      "8": 'Your version of %1$s is out of date. We recommend you upgrade to at least v%2$s, but preferably to the latest stable version.Plural category Zero',
+      "9": 'Translations don\'t match template. Run sync to update from "%s"',
+      "10": 'Media error: "% s"'
+    };
+    //slice a given array and make dynamic parts according to the number of arrays after slice
+    const key_array = Object.keys(array);
+    const size = 5;
+    const parts = [];
+    for (let i = 0; i < key_array.length; i += size) {
+      const array_slice = key_array.slice(i, i + size);
+      const part = {};
+      for (const key of array_slice) {
+        part[key] = array[key];
+      }
+      parts.push(part);
+      const partIndex = parts.length - 1;
+      const tabDiv = document.createElement("div");
+      tabDiv.className = "tab";
+      const containerDiv = document.createElement("div");
+      containerDiv.className = "container";
+      containerDiv.innerHTML = `<h1>Part ${partIndex + 1}:</h1>
+        <input type="hidden" id="translate${partIndex}">
+        <p><h5>Step 1: Click on the Copy button to Copy the strings</h5></p>
+        <button onclick="Copy(${partIndex})" class="btn btn-warning btn-lg" type="" id="copy" name="copy">Copy</button>
+        <p><h5>Step 2: After copying the strings from above, open ChatGPT and paste the content to translate the strings</h5></p>
+        <p>Click Here to open ChatGPT  
+        <button onclick="redirect()" class="btn btn-info btn-sm" id="redirectButton">Click Me</button></p>
+        <p><h5>Step 3: Now Copy the Translated string that ChatGPT gives you and paste it into the below textarea</h5></p>
+        <p style="font-size: smaller;">(must be in JSON form)</p></p>
+        <textarea id="output${partIndex}" rows="3" cols="112"></textarea>
+        <div id="table${partIndex}"></div>
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button onclick="save(${partIndex})" class="btn btn-success btn-lg" type="">Save</button>
+            </div>
+        </div>`;
+      tabDiv.appendChild(containerDiv);
+      document.getElementById("tabContainer").appendChild(tabDiv);
+    }
+    for (let i = 0; i < parts.length; i++) {
+      const jsonString = `You are a helpful assistant that translates English to Hindi and replies with well-formed JSON arrays only in the code block. [% s,% d,% S,% D,% s,% S,% d,% D,٪ س] These all are special placeholders, please don't translate them. Please don't repeat the translation and don't skip any string to fetch. I want the maximum accurate result.
+  Translate the following JSON array from English to a JSON array in Hindi even if the values are the same:
+  ${JSON.stringify(parts[i])}`;
+      document.getElementById(`translate${i}`).value = jsonString;
+    }
+
+    // Copy jsonString
+    function Copy(index) {
+      const inputField = document.getElementById(`translate${index}`);
+      const textArea = document.createElement("textarea");
+      textArea.value = inputField.value;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      event.preventDefault();
+    }
+
+    function redirect() {
+      window.open("https://chat.openai.com/", "_blank");
+      event.preventDefault();
+    }
+
+    //Save the translated and untranslated objects in localstorage and create a table
+    function save(index) {
+      event.preventDefault();
+      const inputField = document.getElementById(`translate${index}`);
+      const textarea = document.getElementById(`output${index}`);
+
+      const inputValue = inputField.value;
+      const textareaValue = textarea.value;
+      try {
+        JSON.parse(textareaValue);
+      } catch (error) {
+        document.getElementById('error').innerHTML = '*Please enter a valid JSON-formatted string in the textarea.';
+        setTimeout(function () {
+      document.getElementById('error').innerHTML = '';
+    }, 2000);
+        return;
+      }
+      const translated_object = JSON.parse(textareaValue);
+      const given_array = Object.values(parts[index]);
+      const inputKeys = Object.keys(parts[index]);
+      const translatedKeys = Object.keys(translated_object);
+      if (inputKeys.length !== translatedKeys.length) {
+        document.getElementById('error').innerHTML = '*Number of keys in input and translated object do not match. Please provide a valid translation.';
+        setTimeout(function () {
+      document.getElementById('error').innerHTML = '';
+    }, 2000);
+        return;
+      }
+
+      const keysMatch = inputKeys.every((key) => translatedKeys.includes(key));
+      if (!keysMatch) {
+        document.getElementById('error').innerHTML = '*Keys in input and translated object do not match. Please provide a valid translation.';
+        setTimeout(function () {
+      document.getElementById('error').innerHTML = '';
+    }, 2000);
+        return;
+      }
+      const mapping = {
+        '"% s"': '"%s"',
+        '"% d"': '"%d"',
+        '"% S"': '"%s"',
+        '"% D"': '"%d"',
+        '% s': ' %s ',
+        '% S': ' %s ',
+        '% d': ' %d ',
+        '% D': ' %d ',
+        '٪ s': ' %s ',
+        '٪ S': ' %s ',
+        '٪ d': ' %d ',
+        '٪ D': ' %d ',
+        '٪ س': ' %s ',
+      };
+      let resultHtml = '<table class="table">';
+      resultHtml += '<tr><th scope="col">S. No.</th><th scope="col">String</th><th scope="col">Translated String</th></tr>';
+      const dataToSave = {};
+      for (let i = 0; i < inputKeys.length; i++) {
+        let x = i + 1;
+        const key = inputKeys[i];
+        const value = parts[index][key];
+        const translated_value = translated_object[key];
+        let textWithMapping = translated_value;
+        for (const pattern in mapping) {
+          const regex = new RegExp(pattern, 'g');
+          textWithMapping = textWithMapping.replace(regex, mapping[pattern]);
+        }
+        resultHtml += `<tbody><tr><td>${key}</td><td>${value}</td><td>${textWithMapping}</td></tr></tbody>`;
+        dataToSave[key] = {
+          [value]: textWithMapping,
+        };
+      }
+      resultHtml += '</table>';
+      const tableDiv = document.querySelector(`#table${index}`);
+      tableDiv.innerHTML = resultHtml;
+
+      const dataToSaveJSON = JSON.stringify(dataToSave);
+      localStorage.setItem(`part${index + 1}`, dataToSaveJSON);
+    }
+
+    //Previous and Next Button
+    let currentContainerIndex = 0;
+    function showTab(index) {
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach((tab, tabIndex) => {
+        if (tabIndex === index) {
+          tab.style.display = 'block';
+        } else {
+          tab.style.display = 'none';
+        }
+      });
+    }
+
+    function updateButton() {
+      const prevButton = document.getElementById('prevButton');
+      const nextButton = document.getElementById('nextButton');
+      const closeButton = document.getElementById('closeButton');
+      if (parts.length <= 1) {
+        prevButton.style.display = 'none';
+        nextButton.style.display = 'none';
+        closeButton.style.display = 'inline';
+      } else if (currentContainerIndex === 0) {
+        prevButton.style.display = 'none';
+        nextButton.style.display = 'inline';
+        closeButton.style.display = 'none';
+      } else if (currentContainerIndex === parts.length - 1) {
+        prevButton.style.display = 'inline';
+        nextButton.style.display = 'none';
+        closeButton.style.display = 'inline';
+      } else {
+        prevButton.style.display = 'inline';
+        nextButton.style.display = 'inline';
+        closeButton.style.display = 'none';
+      }
+    }
+
+    function previousTab(event) {
+      event.preventDefault();
+      if (currentContainerIndex > 0) {
+        currentContainerIndex--;
+        showTab(currentContainerIndex);
+        updateButton();
+      }
+    }
+
+    function nextTab(event) {
+      event.preventDefault();
+  if (currentContainerIndex < parts.length - 1) {
+    const currentTableDiv = document.getElementById(`table${currentContainerIndex}`);
+    const currentTable = currentTableDiv.querySelector('table');
+    if (currentTable) {
+      currentContainerIndex++;
+      showTab(currentContainerIndex);
+      updateButton();
+    } else {
+      document.getElementById('error').innerHTML = '*Please create the table before moving to the next part.';
+      setTimeout(function () {
+      document.getElementById('error').innerHTML = '';
+    }, 2000);
+    }
+  }
+    }
+    showTab(currentContainerIndex);
+    updateButton();
+
+    //Create the table of all the translated and untranslated strings from all the parts and clear the local storage
+    document.getElementById('closeButton').addEventListener('click', function () {
+      event.preventDefault();
+      const currentTableDiv = document.getElementById(`table${currentContainerIndex}`);
+    const currentTable = currentTableDiv.querySelector('table');
+    if (currentTable) {
+      appendTables();
+      clearLocalStorage();
+    }
+    else{
+      document.getElementById('error').innerHTML = '*Please create the table before closing it';
+    }
+    setTimeout(function () {
+      document.getElementById('error').innerHTML = '';
+    }, 2000);
+    });
+
+    function appendTables() {
+      event.preventDefault();
+      const tablesContainer = document.getElementById('tablesContainer');
+
+      tablesContainer.innerHTML = '';
+
+      for (let i = 0; i < parts.length; i++) {
+        const tableDiv = document.getElementById(`table${i}`);
+        const clonedTable = tableDiv.cloneNode(true);
+        if (i !== 0) {
+          clonedTable.querySelector('table tr:first-child').remove();
+        }
+        if(i === parts.length-1){
+          tableDiv.style.display = "none";
+        }
+        tablesContainer.appendChild(clonedTable);
+      }
+    }
+
+    function clearLocalStorage(){
+      for (let i = 0; i < parts.length; i++) {
+        localStorage.removeItem(`part${i + 1}`);
+      }
+    }
+  </script>
+</body>
+
+</html>
