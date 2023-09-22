@@ -59,18 +59,27 @@
 
 
   <script>
-    const array = {
-      "1": '%1$s - %2$s',
-      "2": '%1$s changed the comment status',
-      "3": 'Managing site "%s"',
-      "4": '"% d" comment moved to Spam.',
-      "5": '%1$s bytes (%2$s MB)',
-      "6": 'The quick brown %s fox jumps over the lazy dog in the middle of the night.(%2$s hits, %3$s misses)',
-      "7": "No form definition found at %s.",
-      "8": 'Your version of %1$s is out of date. We recommend you upgrade to at least v%2$s, but preferably to the latest stable version.Plural category Zero',
-      "9": 'Translations don\'t match template. Run sync to update from "%s"',
-      "10": 'Media error: "% s"'
-    };
+    const newjson =[
+{"source":"WooCommerce","target":"","context":null,"notes":"Plugin Name of the plugin","refs":"includes/admin/class-wc-admin-menus.php:71 includes/admin/class-wc-admin-setup-wizard.php:353 includes/admin/class-wc-admin-setup-wizard.php:446 includes/admin/class-wc-admin.php:246 includes/admin/helper/views/html-oauth-start.php:19 includes/class-wc-order.php:1893 includes/class-wc-order.php:1894 includes/class-wc-privacy.php:52 includes/class-woocommerce.php:218 includes/customizer/class-wc-shop-customizer.php:38 includes/react-admin/connect-existing-pages.php:64 includes/wc-order-functions.php:1053 src/Admin/Features/ProductBlockEditor/BlockRegistry.php:87 src/Admin/PageController.php:201 src/Internal/Admin/Homescreen.php:171 src/Internal/Admin/Loader.php:396 src/Internal/Admin/Settings.php:208 templates/auth/header.php:32 packages/woocommerce-blocks/assets/js/blocks/cart/index.js:32 packages/woocommerce-blocks/assets/js/blocks/product-on-sale/index.js:27 packages/woocommerce-blocks/assets/js/blocks/reviews/reviews-by-product/index.js:31 packages/woocommerce-blocks/assets/js/index.js:25 packages/woocommerce-blocks/build/all-products.js:20 packages/woocommerce-blocks/build/all-reviews.js:7 packages/woocommerce-blocks/build/cart.js:23 packages/woocommerce-blocks/build/legacy-template.js:7 packages/woocommerce-blocks/build/mini-cart-contents.js:4 packages/woocommerce-blocks/build/product-on-sale.js:6 packages/woocommerce-blocks/build/product-search.js:1 packages/woocommerce-blocks/build/product-top-rated.js:6 packages/woocommerce-blocks/build/reviews-by-category.js:12 packages/woocommerce-blocks/build/reviews-by-product.js:17 packages/woocommerce-blocks/build/wc-blocks.js:1"},
+    {"source":"https://woocommerce.com/","target":"","context":null,"notes":"Plugin URI of the plugin"},
+    {"source":"An eCommerce toolkit that helps you sell anything. Beautifully.","target":"","context":null,"notes":"Description of the plugin"},
+    {"source":"Automattic","target":"","context":null,"notes":"Author of the plugin"},
+    {"source":"https://woocommerce.com","target":"","context":null,"notes":"Author URI of the plugin"},
+    {"source":"Africa","target":"","context":null,"refs":"i18n/continents.php:15"},
+    {"source":"Antarctica","target":"","context":null,"refs":"i18n/continents.php:78 i18n/countries.php:25"},
+    {"source":"Asia","target":"","context":null,"refs":"i18n/continents.php:88"},
+    {"source":"Europe","target":"","context":null,"refs":"i18n/continents.php:146"},
+    {"source":"North America","target":"","context":null,"refs":"i18n/continents.php:203"},
+    {"source":"Oceania","target":"","context":null,"refs":"i18n/continents.php:249"},
+    {"source":"South America","target":"","context":null,"refs":"i18n/continents.php:280"},
+    {"source":"Afghanistan","target":"","context":null,"refs":"i18n/countries.php:17"},
+    {"source":"Åland Islands","target":"","context":null,"refs":"i18n/countries.php:18"},
+    {"source":"Albania","target":"","context":null,"refs":"i18n/countries.php:19"},
+    {"source":"Algeria","target":"","context":null,"refs":"i18n/countries.php:20"}];
+    const array = {};
+    for (let i = 0; i < newjson.length; i++) {
+      array[i + 1] = newjson[i].source;
+}
     //slice a given array and make dynamic parts according to the number of arrays after slice
     const key_array = Object.keys(array);
     const size = 5;
