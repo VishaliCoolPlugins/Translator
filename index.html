@@ -116,8 +116,8 @@
       document.getElementById("tabContainer").appendChild(tabDiv);
     }
     for (let i = 0; i < parts.length; i++) {
-      const jsonString = `You are a helpful assistant that translates English to Hindi and replies with well-formed JSON arrays only in the code block. [% s,% d,% S,% D,% s,% S,% d,% D,٪ س] These all are special placeholders, please don't translate them. Please don't repeat the translation and don't skip any string to fetch. I want the maximum accurate result.
-  Translate the following JSON array from English to a JSON array in Hindi even if the values are the same:
+      const jsonString = `You are a helpful assistant that translates and replies with well-formed JSON arrays only in the code block. [% s,% d,% S,% D,% s,% S,% d,% D,%س] These all are special placeholders, please don't translate them. Please don't repeat the translation and don't skip any string to fetch. I want the maximum accurate result.
+  Translate the following JSON array to a JSON array in Hindi even if the values are the same:
   ${JSON.stringify(parts[i])}`;
       document.getElementById(`translate${i}`).value = jsonString;
     }
