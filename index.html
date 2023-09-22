@@ -40,8 +40,8 @@
 <body>
   <form id="Form">
     <div id="tabContainer">
-      <button style="float:left;" onclick="previousTab(event)" class="btn btn-light" id="prevButton">Previous</button>
-      <button style="float:right;" onclick="nextTab(event)" class="btn btn-light" id="nextButton">Next</button>
+      <button style="float:left;" class="btn btn-light" id="prevButton">Previous</button>
+      <button style="float:right;" class="btn btn-light" id="nextButton">Next</button>
       <button style="float:right;" class="btn btn-danger" id="closeButton">Close</button>
     </div>
     <div id="error" style="color: red; font-size: 15px; font-weight: 800;"></div>
@@ -59,71 +59,82 @@
 
 
   <script>
-    const newjson =[
-{"source":"WooCommerce","target":"","context":null,"notes":"Plugin Name of the plugin","refs":"includes/admin/class-wc-admin-menus.php:71 includes/admin/class-wc-admin-setup-wizard.php:353 includes/admin/class-wc-admin-setup-wizard.php:446 includes/admin/class-wc-admin.php:246 includes/admin/helper/views/html-oauth-start.php:19 includes/class-wc-order.php:1893 includes/class-wc-order.php:1894 includes/class-wc-privacy.php:52 includes/class-woocommerce.php:218 includes/customizer/class-wc-shop-customizer.php:38 includes/react-admin/connect-existing-pages.php:64 includes/wc-order-functions.php:1053 src/Admin/Features/ProductBlockEditor/BlockRegistry.php:87 src/Admin/PageController.php:201 src/Internal/Admin/Homescreen.php:171 src/Internal/Admin/Loader.php:396 src/Internal/Admin/Settings.php:208 templates/auth/header.php:32 packages/woocommerce-blocks/assets/js/blocks/cart/index.js:32 packages/woocommerce-blocks/assets/js/blocks/product-on-sale/index.js:27 packages/woocommerce-blocks/assets/js/blocks/reviews/reviews-by-product/index.js:31 packages/woocommerce-blocks/assets/js/index.js:25 packages/woocommerce-blocks/build/all-products.js:20 packages/woocommerce-blocks/build/all-reviews.js:7 packages/woocommerce-blocks/build/cart.js:23 packages/woocommerce-blocks/build/legacy-template.js:7 packages/woocommerce-blocks/build/mini-cart-contents.js:4 packages/woocommerce-blocks/build/product-on-sale.js:6 packages/woocommerce-blocks/build/product-search.js:1 packages/woocommerce-blocks/build/product-top-rated.js:6 packages/woocommerce-blocks/build/reviews-by-category.js:12 packages/woocommerce-blocks/build/reviews-by-product.js:17 packages/woocommerce-blocks/build/wc-blocks.js:1"},
-    {"source":"https://woocommerce.com/","target":"","context":null,"notes":"Plugin URI of the plugin"},
-    {"source":"An eCommerce toolkit that helps you sell anything. Beautifully.","target":"","context":null,"notes":"Description of the plugin"},
-    {"source":"Automattic","target":"","context":null,"notes":"Author of the plugin"},
-    {"source":"https://woocommerce.com","target":"","context":null,"notes":"Author URI of the plugin"},
-    {"source":"Africa","target":"","context":null,"refs":"i18n/continents.php:15"},
-    {"source":"Antarctica","target":"","context":null,"refs":"i18n/continents.php:78 i18n/countries.php:25"},
-    {"source":"Asia","target":"","context":null,"refs":"i18n/continents.php:88"},
-    {"source":"Europe","target":"","context":null,"refs":"i18n/continents.php:146"},
-    {"source":"North America","target":"","context":null,"refs":"i18n/continents.php:203"},
-    {"source":"Oceania","target":"","context":null,"refs":"i18n/continents.php:249"},
-    {"source":"South America","target":"","context":null,"refs":"i18n/continents.php:280"},
-    {"source":"Afghanistan","target":"","context":null,"refs":"i18n/countries.php:17"},
-    {"source":"Åland Islands","target":"","context":null,"refs":"i18n/countries.php:18"},
-    {"source":"Albania","target":"","context":null,"refs":"i18n/countries.php:19"},
-    {"source":"Algeria","target":"","context":null,"refs":"i18n/countries.php:20"}];
-    const array = {};
-    for (let i = 0; i < newjson.length; i++) {
-      array[i + 1] = newjson[i].source;
-}
+    const JsonData = [
+      { "source": "WooCommerce", "target": "", "context": null, "notes": "Plugin Name of the plugin", "refs": "includes/admin/class-wc-admin-menus.php:71 includes/admin/class-wc-admin-setup-wizard.php:353 includes/admin/class-wc-admin-setup-wizard.php:446 includes/admin/class-wc-admin.php:246 includes/admin/helper/views/html-oauth-start.php:19 includes/class-wc-order.php:1893 includes/class-wc-order.php:1894 includes/class-wc-privacy.php:52 includes/class-woocommerce.php:218 includes/customizer/class-wc-shop-customizer.php:38 includes/react-admin/connect-existing-pages.php:64 includes/wc-order-functions.php:1053 src/Admin/Features/ProductBlockEditor/BlockRegistry.php:87 src/Admin/PageController.php:201 src/Internal/Admin/Homescreen.php:171 src/Internal/Admin/Loader.php:396 src/Internal/Admin/Settings.php:208 templates/auth/header.php:32 packages/woocommerce-blocks/assets/js/blocks/cart/index.js:32 packages/woocommerce-blocks/assets/js/blocks/product-on-sale/index.js:27 packages/woocommerce-blocks/assets/js/blocks/reviews/reviews-by-product/index.js:31 packages/woocommerce-blocks/assets/js/index.js:25 packages/woocommerce-blocks/build/all-products.js:20 packages/woocommerce-blocks/build/all-reviews.js:7 packages/woocommerce-blocks/build/cart.js:23 packages/woocommerce-blocks/build/legacy-template.js:7 packages/woocommerce-blocks/build/mini-cart-contents.js:4 packages/woocommerce-blocks/build/product-on-sale.js:6 packages/woocommerce-blocks/build/product-search.js:1 packages/woocommerce-blocks/build/product-top-rated.js:6 packages/woocommerce-blocks/build/reviews-by-category.js:12 packages/woocommerce-blocks/build/reviews-by-product.js:17 packages/woocommerce-blocks/build/wc-blocks.js:1" },
+      { "source": "https://woocommerce.com/", "target": "", "context": null, "notes": "Plugin URI of the plugin" },
+      { "source": "An eCommerce toolkit that helps you sell anything. Beautifully.", "target": "", "context": null, "notes": "Description of the plugin" },
+      { "source": "Automattic", "target": "", "context": null, "notes": "Author of the plugin" },
+      { "source": "https://woocommerce.com", "target": "", "context": null, "notes": "Author URI of the plugin" },
+      { "source": "Africa", "target": "", "context": null, "refs": "i18n/continents.php:15" },
+      { "source": "Antarctica", "target": "", "context": null, "refs": "i18n/continents.php:78 i18n/countries.php:25" },
+      { "source": "Asia", "target": "", "context": null, "refs": "i18n/continents.php:88" },
+      { "source": "Europe", "target": "", "context": null, "refs": "i18n/continents.php:146" },
+      { "source": "North America", "target": "", "context": null, "refs": "i18n/continents.php:203" },
+      { "source": "Oceania", "target": "", "context": null, "refs": "i18n/continents.php:249" },
+      { "source": "South America", "target": "", "context": null, "refs": "i18n/continents.php:280" },
+      { "source": "Afghanistan", "target": "", "context": null, "refs": "i18n/countries.php:17" },
+      { "source": "Åland Islands", "target": "", "context": null, "refs": "i18n/countries.php:18" },
+      { "source": "Albania", "target": "", "context": null, "refs": "i18n/countries.php:19" },
+      { "source": "Algeria", "target": "", "context": null, "refs": "i18n/countries.php:20" }];
+    const source_String = {};
+    for (let i = 0; i < JsonData.length; i++) {
+      source_String[i + 1] = JsonData[i].source;
+    }
     //slice a given array and make dynamic parts according to the number of arrays after slice
-    const key_array = Object.keys(array);
-    const size = 5;
-    const parts = [];
-    for (let i = 0; i < key_array.length; i += size) {
-      const array_slice = key_array.slice(i, i + size);
-      const part = {};
-      for (const key of array_slice) {
-        part[key] = array[key];
-      }
-      parts.push(part);
-      const partIndex = parts.length - 1;
+    const max_size = 8;
+    function createTabContent(partIndex) {
       const tabDiv = document.createElement("div");
       tabDiv.className = "tab";
+
       const containerDiv = document.createElement("div");
       containerDiv.className = "container";
-      containerDiv.innerHTML = `<h1>Part ${partIndex + 1}:</h1>
-        <input type="hidden" id="translate${partIndex}">
-        <p><h5>Step 1: Click on the Copy button to Copy the strings</h5></p>
-        <button onclick="Copy(${partIndex})" class="btn btn-warning btn-lg" type="" id="copy" name="copy">Copy</button>
-        <p><h5>Step 2: After copying the strings from above, open ChatGPT and paste the content to translate the strings</h5></p>
-        <p>Click Here to open ChatGPT  
-        <button onclick="redirect()" class="btn btn-info btn-sm" id="redirectButton">Click Me</button></p>
-        <p><h5>Step 3: Now Copy the Translated string that ChatGPT gives you and paste it into the below textarea</h5></p>
-        <p style="font-size: smaller;">(must be in JSON form)</p></p>
-        <textarea id="output${partIndex}" rows="3" cols="112"></textarea>
-        <div id="table${partIndex}"></div>
-        <div style="overflow:auto;">
-            <div style="float:right;">
-                <button onclick="save(${partIndex})" class="btn btn-success btn-lg" type="">Save</button>
-            </div>
-        </div>`;
+
+      containerDiv.innerHTML = `
+    <h1>Part ${partIndex + 1}:</h1>
+    <input type="hidden" id="translate${partIndex}">
+    <p><h5>Step 1: Click on the Copy button to Copy the strings</h5></p>
+    <button onclick="copy_to_clipboard(${partIndex})" class="btn btn-warning btn-lg" type="" id="copy" name="copy">Copy</button>
+    <p><h5>Step 2: After copying the strings from above, open ChatGPT and paste the content to translate the strings</h5></p>
+    <p>Click Here to open ChatGPT  
+    <button onclick="redirect()" class="btn btn-info btn-sm" id="redirectButton">Click Me</button></p>
+    <p><h5>Step 3: Now Copy the Translated string that ChatGPT gives you and paste it into the below textarea</h5></p>
+    <p style="font-size: smaller;">(must be in JSON form)</p></p>
+    <textarea id="output${partIndex}" rows="3" cols="112"></textarea>
+    <div id="table${partIndex}"></div>
+    <div style="overflow:auto;">
+      <div style="float:right;">
+        <button onclick="save(${partIndex})" class="btn btn-success btn-lg" type="">Save</button>
+      </div>
+    </div>`;
+
       tabDiv.appendChild(containerDiv);
-      document.getElementById("tabContainer").appendChild(tabDiv);
-    }
-    for (let i = 0; i < parts.length; i++) {
-      const jsonString = `You are a helpful assistant that translates and replies with well-formed JSON arrays only in the code block. [% s,% d,% S,% D,% s,% S,% d,% D,%س] These all are special placeholders, please don't translate them. Please don't repeat the translation and don't skip any string to fetch. I want the maximum accurate result.
-  Translate the following JSON array to a JSON array in Hindi even if the values are the same:
-  ${JSON.stringify(parts[i])}`;
-      document.getElementById(`translate${i}`).value = jsonString;
+      return tabDiv;
     }
 
+    // Create tab contents and add them to the container
+    const tabContainer = document.getElementById("tabContainer");
+    const parts = [];
+
+    for (let i = 0; i < Object.keys(source_String).length; i += max_size) {
+      const array_slice = Object.keys(source_String).slice(i, i + max_size);
+      const part = {};
+      for (const key of array_slice) {
+        part[key] = source_String[key];
+      }
+      parts.push(part);
+
+      const tabContent = createTabContent(parts.length - 1);
+      tabContainer.appendChild(tabContent);
+    }
+    parts.forEach((part, i) => {
+      const jsonString = `You are a helpful assistant that translates and replies with well-formed JSON arrays only in the code block. [% s,% d,% S,% D,% s,% S,% d,% D,%س] These all are special placeholders, please don't translate them. Please don't repeat the translation and don't skip any string to fetch. I want the maximum accurate result.
+  Translate the following JSON array to a JSON array in Hindi even if the values are the same:
+  ${JSON.stringify(part)}`;
+      document.getElementById(`translate${i}`).value = jsonString;
+    });
+
     // Copy jsonString
-    function Copy(index) {
+    function copy_to_clipboard(index) {
       const inputField = document.getElementById(`translate${index}`);
       const textArea = document.createElement("textarea");
       textArea.value = inputField.value;
@@ -152,19 +163,18 @@
       } catch (error) {
         document.getElementById('error').innerHTML = '*Please enter a valid JSON-formatted string in the textarea.';
         setTimeout(function () {
-      document.getElementById('error').innerHTML = '';
-    }, 5000);
+          document.getElementById('error').innerHTML = '';
+        }, 5000);
         return;
       }
       const translated_object = JSON.parse(textareaValue);
-      const given_array = Object.values(parts[index]);
       const inputKeys = Object.keys(parts[index]);
       const translatedKeys = Object.keys(translated_object);
       if (inputKeys.length !== translatedKeys.length) {
         document.getElementById('error').innerHTML = '*Number of keys in input and translated object do not match. Please provide a valid translation.';
         setTimeout(function () {
-      document.getElementById('error').innerHTML = '';
-    }, 5000);
+          document.getElementById('error').innerHTML = '';
+        }, 5000);
         return;
       }
 
@@ -172,8 +182,8 @@
       if (!keysMatch) {
         document.getElementById('error').innerHTML = '*Keys in input and translated object do not match. Please provide a valid translation.';
         setTimeout(function () {
-      document.getElementById('error').innerHTML = '';
-    }, 5000);
+          document.getElementById('error').innerHTML = '';
+        }, 5000);
         return;
       }
       const mapping = {
@@ -264,40 +274,39 @@
 
     function nextTab(event) {
       event.preventDefault();
-  if (currentContainerIndex < parts.length - 1) {
-    const currentTableDiv = document.getElementById(`table${currentContainerIndex}`);
-    const currentTable = currentTableDiv.querySelector('table');
-    if (currentTable) {
-      currentContainerIndex++;
-      showTab(currentContainerIndex);
-      updateButton();
-    } else {
-      document.getElementById('error').innerHTML = '*Please create the table before moving to the next part.';
-      setTimeout(function () {
-      document.getElementById('error').innerHTML = '';
-    }, 5000);
-    }
-  }
+      if (currentContainerIndex < parts.length - 1) {
+        const currentTableDiv = document.getElementById(`table${currentContainerIndex}`);
+        const currentTable = currentTableDiv.querySelector('table');
+        if (currentTable) {
+          currentContainerIndex++;
+          showTab(currentContainerIndex);
+          updateButton();
+        } else {
+          document.getElementById('error').innerHTML = '*Please create the table before moving to the next part.';
+          setTimeout(function () {
+            document.getElementById('error').innerHTML = '';
+          }, 5000);
+        }
+      }
     }
     showTab(currentContainerIndex);
     updateButton();
-
     //Create the table of all the translated and untranslated strings from all the parts and clear the local storage
-    document.getElementById('closeButton').addEventListener('click', function () {
+    function close(event) {
       event.preventDefault();
       const currentTableDiv = document.getElementById(`table${currentContainerIndex}`);
-    const currentTable = currentTableDiv.querySelector('table');
-    if (currentTable) {
-      appendTables();
-      clearLocalStorage();
-    }
-    else{
-      document.getElementById('error').innerHTML = '*Please create the table before closing it';
-    }
-    setTimeout(function () {
-      document.getElementById('error').innerHTML = '';
-    }, 5000);
-    });
+      const currentTable = currentTableDiv.querySelector('table');
+      if (currentTable) {
+        appendTables();
+        clearLocalStorage();
+      }
+      else {
+        document.getElementById('error').innerHTML = '*Please create the table before closing it';
+      }
+      setTimeout(function () {
+        document.getElementById('error').innerHTML = '';
+      }, 5000);
+    };
 
     function appendTables() {
       event.preventDefault();
@@ -311,18 +320,21 @@
         if (i !== 0) {
           clonedTable.querySelector('table tr:first-child').remove();
         }
-        if(i === parts.length-1){
+        if (i === parts.length - 1) {
           tableDiv.style.display = "none";
         }
         tablesContainer.appendChild(clonedTable);
       }
     }
 
-    function clearLocalStorage(){
+    function clearLocalStorage() {
       for (let i = 0; i < parts.length; i++) {
         localStorage.removeItem(`part${i + 1}`);
       }
     }
+    document.getElementById('prevButton').addEventListener('click', previousTab);
+    document.getElementById('nextButton').addEventListener('click', nextTab);
+    document.getElementById('closeButton').addEventListener('click', close);
   </script>
 </body>
 
